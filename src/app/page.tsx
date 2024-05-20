@@ -1,16 +1,23 @@
+"use client";
+
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
-export default async function Home() {
-  const session = await getServerSession();
+import CreatePost from "@/components/CreatePost";
 
-  if (!session) {
-    redirect("/login");
-  }
+export default function Home() {
+  const { data, status } = useSession();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      redirect("/login");
+    }
+  }, [status]);
 
   return (
     <div>
-      <h1>Welcome to the Home Page</h1>
+      <CreatePost />
     </div>
   );
 }
