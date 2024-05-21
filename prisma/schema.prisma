@@ -23,6 +23,7 @@ model User {
 
   following     Follow[] @relation("following")
   followed      Follow[] @relation("followed")
+  posts         Post[]   @relation("post")
 }
 
 model Account {
@@ -89,4 +90,12 @@ model Follow {
 
   followed             User    @relation("followed", references: [id], fields: [followedId], onDelete: Cascade)
   followedId           String  @db.ObjectId
+}
+
+model Post {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  user                 User     @relation("post", references: [id], fields: [userId])
+  userId               String   @db.ObjectId
+  content              String
+  created_at           DateTime @default(now())
 }

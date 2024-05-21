@@ -1,47 +1,59 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+
+import api from "@/lib/axios";
 
 export default () => {
-  const maxCount = 140;
+  const router = useRouter();
 
-  const [text, setText] = useState("");
-  const [charCount, setChatCount] = useState(0);
+  const maxCount = 140;
+  const [content, setContent] = useState("");
+
+  const createPost = useMutation({
+    mutationFn: () => api.createPost(content),
+    onSuccess: () => {
+      console.log("done");
+      router.push("/");
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(text);
+    createPost.mutate();
   };
 
   const handleChange = (e) => {
     e.preventDefault();
 
     const newText = e.target.value;
-
     if (newText.length <= maxCount) {
-      setText(newText);
+      setContent(newText);
     }
   };
 
   return (
-    <div className="max-w-sm">
-      <form className="flex flex-col items-center" onSubmit={handleSubmit}>
-        <textarea
-          rows="5"
-          className="w-full p-2 bg-teal-900 resize-none"
-          placeholder="Whats on your mind..."
-          value={text}
-          onChange={handleChange}
-        />
-        <div className="bg-teal-500 flex flex-row w-full content-center items-center px-8">
-          <span className="grow">
-            {text.length} / {maxCount}
-          </span>
-          <button className="py-2 px-4 hover:bg-teal-900" type="submit">
-            Post
-          </button>
-        </div>
-      </form>
-    </div>
+    <form
+      className="w-full flex flex-col items-center border border-black"
+      onSubmit={handleSubmit}
+    >
+      <textarea
+        rows="5"
+        className="w-full p-2 resize-none focus:outline-none focus:ring-0"
+        placeholder="Whats on your mind..."
+        value={content}
+        onChange={handleChange}
+      />
+      <div className=" flex flex-row w-full content-center items-center">
+        <span className="grow py-2 px-4">
+          {content.length} / {maxCount}
+        </span>
+        <button className="py-2 px-4 bg-black text-white" type="submit">
+          Post
+        </button>
+      </div>
+    </form>
   );
 };

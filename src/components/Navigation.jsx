@@ -41,6 +41,13 @@ export default () => {
         >
           Sign Out
         </Link>
+
+        <Link
+          className="text-xl font-semibold bg-blue-500 px-4 py-2"
+          href="/create-post"
+        >
+          Tweet
+        </Link>
       </nav>
     </header>
   );
