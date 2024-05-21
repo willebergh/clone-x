@@ -15,9 +15,5 @@ export default function Home() {
     }
   }, [status]);
 
-  return (
-    <div>
-      <CreatePost />
-    </div>
-  );
+  return <div>Hello</div>;
 }

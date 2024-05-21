@@ -3,9 +3,14 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { getServerSession } from "next-auth";
+
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
+
 import SessionProvider from "@/components/SessionProvider";
+import QueryProvider from "@/components/QueryProvider";
+import Navigation from "@/components/Navigation";
 import Header from "@/components/Header";
+import Search from "@/components/Search";
 
 export const metadata: Metadata = {
   title: "Twitter Clone",
@@ -23,10 +28,15 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <SessionProvider session={session}>
-        <body className={inter.className}>
-          <Header />
-          {children}
-        </body>
+        <QueryProvider>
+          <body className={inter.className}>
+            <div className="grid grid-cols-4">
+              <Navigation />
+              <div className="col-span-2 ">{children}</div>
+              <Search />
+            </div>
+          </body>
+        </QueryProvider>
       </SessionProvider>
     </html>
   );
