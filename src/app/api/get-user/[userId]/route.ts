@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 import prisma from "@/lib/prisma";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 export async function GET(
   request: NextRequest,
@@ -17,6 +16,7 @@ export async function GET(
 
   const user = await prisma.user.findUnique({
     where: { id: params.userId },
+    include: { followed: true, following: true },
   });
 
   if (!user) {
@@ -26,5 +26,25 @@ export async function GET(
     );
   }
 
-  return NextResponse.json(user, { status: 200 });
+  const requester = await prisma.user.findUnique({
+    where: { email: session?.user?.email || "" },
+  });
+
+  if (!requester) {
+    return NextResponse.json({ message: "User not found" }, { status: 404 });
+  }
+
+  const follow = await prisma.follow.findFirst({
+    where: {
+      followedId: user.id,
+      followingId: requester.id,
+    },
+  });
+
+  const formattedUser = {
+    ...user,
+    isFollowing: Boolean(follow),
+  };
+
+  return NextResponse.json(formattedUser, { status: 200 });
 }

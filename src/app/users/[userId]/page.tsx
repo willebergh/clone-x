@@ -2,7 +2,7 @@
 
 import api from "@/lib/axios";
 import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
 export default () => {
@@ -13,6 +13,19 @@ export default () => {
     queryKey: ["user", params?.userId],
     queryFn: () => api.getUser(params.userId as string),
   });
+
+  const followUser = useMutation({
+    mutationFn: () => api.followUser(params.userId as string),
+    onSuccess: user.refetch,
+  });
+
+  const handleActionButtonClick = async () => {
+    if (session.data?.user?.email === user.data.email) {
+      return;
+    } else {
+      followUser.mutate();
+    }
+  };
 
   if (user.isLoading) {
     return (
@@ -36,18 +49,24 @@ export default () => {
             <div className="flex flex-row gap-8">
               <div className="flex flex-col ">
                 <span className="text-center">Followers</span>
-                <span className="text-center text-xl font-semibold">100</span>
+                <span className="text-center text-xl font-semibold">
+                  {user.data.followed.length}
+                </span>
               </div>
               <div className="flex flex-col  hover:bg-gray-100">
                 <span className="text-center">Following</span>
-                <span className="text-center text-xl font-semibold">100</span>
+                <span className="text-center text-xl font-semibold">
+                  {user.data.following.length}
+                </span>
               </div>
             </div>
-            {session.data?.user?.email === user.data.email ? (
-              <button className="bg-blue-300">Edit profile</button>
-            ) : (
-              <button className="bg-blue-300">Follow</button>
-            )}
+            <button onClick={handleActionButtonClick} className="bg-blue-300">
+              {session.data?.user?.email === user.data.email
+                ? "Edit Profile"
+                : user.data.isFollowing
+                ? "Unfollow"
+                : "Follow"}
+            </button>
           </div>
         </div>
       )}
