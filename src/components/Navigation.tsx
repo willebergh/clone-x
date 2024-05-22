@@ -10,10 +10,24 @@ export default () => {
     queryFn: api.getCurrentUser,
   });
 
+  const unreadNotifications = useQuery({
+    queryKey: ["unreadNotifications"],
+    queryFn: api.getUnreadNotifications,
+  });
+
   return (
     <header className="border-r border-black">
+      <h1 className="text-xl font-bold py-4 px-10 border-b border-black">
+        Clone X
+      </h1>
       <nav className="p-8 flex flex-col gap-4">
-        <h1 className="text-xl font-bold px-4 py-2">Clone X</h1>
+        <Link
+          className="text-xl font-semibold px-4 py-2 hover:bg-gray-100"
+          href="/create-post"
+        >
+          Tweet
+        </Link>
+
         <Link
           className="text-xl font-semibold hover:bg-gray-100 px-4 py-2"
           href="/"
@@ -29,10 +43,18 @@ export default () => {
         </Link>
 
         <Link
-          className="text-xl font-semibold hover:bg-gray-100 px-4 py-2"
-          href={"/"}
+          className="text-xl font-semibold hover:bg-gray-100"
+          href="/notifications"
         >
-          Notifications
+          <div className="flex flex-row items-center justify-between">
+            <span className="px-4 py-2">Notifications</span>
+            {unreadNotifications.isSuccess &&
+              unreadNotifications.data.length > 0 && (
+                <span className="bg-red-500 px-4 py-2 text-white">
+                  {unreadNotifications.data.length}
+                </span>
+              )}
+          </div>
         </Link>
 
         <Link
@@ -40,13 +62,6 @@ export default () => {
           href="/logout"
         >
           Sign Out
-        </Link>
-
-        <Link
-          className="text-xl font-semibold bg-blue-500 px-4 py-2"
-          href="/create-post"
-        >
-          Tweet
         </Link>
       </nav>
     </header>

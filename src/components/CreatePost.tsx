@@ -50,7 +50,10 @@ export default () => {
         <span className="grow py-2 px-4">
           {content.length} / {maxCount}
         </span>
-        <button className="py-2 px-4 bg-black text-white" type="submit">
+        <button
+          className="py-2 px-4 bg-blue-500 font-bold text-white"
+          type="submit"
+        >
           Post
         </button>
       </div>

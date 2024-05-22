@@ -55,5 +55,18 @@ export async function POST(
     },
   });
 
+  if (requester.id !== post.userId) {
+    await prisma.notification.create({
+      data: {
+        user: {
+          connect: {
+            id: post.userId,
+          },
+        },
+        content: `${requester.name} has replied your post!`,
+      },
+    });
+  }
+
   return NextResponse.json({ message: "Reply sent! " }, { status: 200 });
 }

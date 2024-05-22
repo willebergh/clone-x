@@ -20,25 +20,26 @@ export default () => {
   };
 
   return (
-    <div className="p-4 border-l border-black gap-4 flex flex-col">
+    <div className="border-l border-black">
       <input
-        className="w-full focus:outline-none focus:ring-0 border border-black p-2 mt-2"
+        className="w-full focus:outline-none focus:ring-0 border-b border-black p-4  text-xl font-bold "
         value={query}
         onChange={handleOnChange}
         placeholder="Search for users..."
       />
-
-      {query !== "" &&
-        users.isSuccess &&
-        users.data.map((user: User) => (
-          <Link
-            href={"/users/" + user.id}
-            className="flex flex-row gap-2 items-center border border-black p-2"
-          >
-            <img className="w-6" src={user.image || ""} />
-            <span className="">{user.name}</span>
-          </Link>
-        ))}
+      <div className="p-4 gap-4 flex flex-col">
+        {query !== "" &&
+          users.isSuccess &&
+          users.data.map((user: User) => (
+            <Link
+              href={"/users/" + user.id}
+              className="flex flex-row gap-2 items-center border border-black p-2"
+            >
+              <img className="w-6" src={user.image || ""} />
+              <span className="">{user.name}</span>
+            </Link>
+          ))}
+      </div>
     </div>
   );
 };

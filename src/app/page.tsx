@@ -10,6 +10,7 @@ import { Post as PostType } from "prisma/prisma-client";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 import Post from "@/components/Post";
+import PageTitle from "@/components/PageTitle";
 
 export default function Home() {
   const { data, status } = useSession();
@@ -25,19 +26,16 @@ export default function Home() {
     }
   }, [status]);
 
-  if (posts.isLoading) {
-    return "loading";
-  }
-
-  if (posts.error) return "error";
-
   return (
-    <div>
-      <div>
-        {posts.data.map((post: any) => (
+    <>
+      <PageTitle content="Home" />
+
+      {posts.isLoading && "Loading"}
+
+      {posts.isSuccess &&
+        posts.data.map((post: any) => (
           <Post key={post.id} refetch={posts.refetch} {...post} />
         ))}
-      </div>
-    </div>
+    </>
   );
 }

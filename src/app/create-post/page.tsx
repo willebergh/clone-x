@@ -3,6 +3,7 @@
 import moment from "moment";
 import { useState, useEffect } from "react";
 import CreatePost from "@/components/CreatePost";
+import PageTitle from "@/components/PageTitle";
 
 export default () => {
   const [time, setTime] = useState("");
@@ -14,12 +15,11 @@ export default () => {
   }, []);
 
   return (
-    <div className="p-4">
-      <div className="flex flex-row justify-between">
-        <h1 className="text-xl font-bold p-4">New Post</h1>
-        <h1 className="text-xl font-bold p-4">{time}</h1>
+    <div>
+      <PageTitle content="New Post" />
+      <div className="p-4">
+        <CreatePost />
       </div>
-      <CreatePost />
     </div>
   );
 };

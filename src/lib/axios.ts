@@ -41,4 +41,16 @@ export default {
     const { data } = await axios.post("/api/search-users", { query });
     return data;
   },
+  getNotifications: async () => {
+    const { data } = await axios.get("/api/get-notifications");
+    return data;
+  },
+  readNotifications: async () => {
+    const { data } = await axios.post("/api/read-notifications");
+    return data;
+  },
+  getUnreadNotifications: async () => {
+    const { data } = await axios.get("/api/get-unread-notifications");
+    return data;
+  },
 };
