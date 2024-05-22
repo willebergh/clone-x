@@ -9,7 +9,6 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import SessionProvider from "@/components/SessionProvider";
 import QueryProvider from "@/components/QueryProvider";
 import Navigation from "@/components/Navigation";
-import Header from "@/components/Header";
 import Search from "@/components/Search";
 
 export const metadata: Metadata = {

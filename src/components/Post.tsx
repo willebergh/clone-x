@@ -5,10 +5,11 @@ import { User, Like, Reply } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import ReplyToPostInput from "@/components/ReplyToPostInput";
+import Image from "next/image";
 
 import api from "@/lib/axios";
 
-export default ({
+const Post = ({
   id,
   created_at,
   content,
@@ -20,7 +21,7 @@ export default ({
   refetch,
 }: {
   id: string;
-  created_at: string;
+  created_at: Date;
   content: string;
   requesterHasLiked?: boolean;
   numberOfReplys?: number;
@@ -42,7 +43,13 @@ export default ({
     <div>
       <div className="border-b border-black p-4 flex flex-col gap-4">
         <div className="flex flex-row gap-4  items-center">
-          <img className="w-12" src={user.image || ""} />
+          <Image
+            height={100}
+            width={100}
+            alt={user.name || ""}
+            className="w-12"
+            src={user.image || ""}
+          />
           <div className="flex flex-col flex-wrap w-full">
             <div className="flex flex-row justify-between">
               <Link className="font-bold" href={"/users/" + user.id}>
@@ -78,3 +85,5 @@ export default ({
     </div>
   );
 };
+
+export default Post;

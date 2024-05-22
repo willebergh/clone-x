@@ -6,18 +6,16 @@ import { useEffect } from "react";
 
 const providers = {
   Github: () => signIn("github"),
-  Google: () => signIn("github"),
-  Apple: () => signIn("github"),
 };
 
-export default () => {
+const LoginPage = () => {
   const { data, status } = useSession();
 
   useEffect(() => {
     if (status === "authenticated") {
       redirect("/");
     }
-  }, [data]);
+  }, [status, data]);
 
   return (
     <div className="p-8 flex flex-row-reverse justify-center items-center gap-16">
@@ -40,7 +38,11 @@ export default () => {
 
       <div className="flex flex-col gap-4">
         {Object.entries(providers).map(([key, func]) => (
-          <button className="bg-teal-500 px-8 py-2" key={key} onClick={func}>
+          <button
+            className="bg-blue-500 text-white px-8 py-2"
+            key={key}
+            onClick={func}
+          >
             {key}
           </button>
         ))}
@@ -48,3 +50,5 @@ export default () => {
     </div>
   );
 };
+
+export default LoginPage;

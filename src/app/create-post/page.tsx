@@ -5,14 +5,24 @@ import { useState, useEffect } from "react";
 import CreatePost from "@/components/CreatePost";
 import PageTitle from "@/components/PageTitle";
 
-export default () => {
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+
+const CreatePage = () => {
   const [time, setTime] = useState("");
+  const { data, status } = useSession();
 
   useEffect(() => {
     setInterval(() => {
       setTime(moment().format("HH:mm:ss"));
     });
   }, []);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      redirect("/");
+    }
+  }, [status, data]);
 
   return (
     <div>
@@ -23,3 +33,5 @@ export default () => {
     </div>
   );
 };
+
+export default CreatePage;

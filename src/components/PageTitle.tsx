@@ -3,7 +3,7 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 
-export default ({ content }: { content: string }) => {
+const PageTitle = ({ content }: { content: string }) => {
   const [clock, setClock] = useState<string>("");
 
   useEffect(() => {
@@ -22,3 +22,5 @@ export default ({ content }: { content: string }) => {
     </div>
   );
 };
+
+export default PageTitle;

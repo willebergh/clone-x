@@ -1,11 +1,18 @@
 import moment from "moment";
 import Link from "next/link";
+import Image from "next/image";
 import { User } from "prisma/prisma-client";
 
-export default ({ content, user }: { content: string; user: User }) => {
+const ReplyOfPost = ({ content, user }: { content: string; user: User }) => {
   return (
     <div className="border-b border-black px-8 py-4 flex flex-row items-center gap-4">
-      <img className="h-8" src={user.image || ""} alt="" />
+      <Image
+        height={100}
+        width={100}
+        alt={user.name || ""}
+        className="h-8 w-8"
+        src={user.image || ""}
+      />
 
       <div className="flex flex-col">
         <span>
@@ -17,3 +24,5 @@ export default ({ content, user }: { content: string; user: User }) => {
     </div>
   );
 };
+
+export default ReplyOfPost;

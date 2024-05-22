@@ -4,13 +4,22 @@ import api from "@/lib/axios";
 import Post from "@/components/Post";
 import Loading from "@/components/Loading";
 import PageTitle from "@/components/PageTitle";
-import { Post as PostType } from "prisma/prisma-client";
+import { Post as PostType, User, Like, Reply } from "prisma/prisma-client";
 
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
-export default () => {
+interface PostWithItAll extends PostType {
+  requesterHasLiked?: boolean;
+  numberOfReplys?: number;
+  user: User;
+  likes: Like[];
+  replys: Reply[];
+}
+
+const UserPage = () => {
   const params = useParams();
   const session = useSession();
 
@@ -48,7 +57,13 @@ export default () => {
           <div className="border-b border-black p-4">
             {user.isSuccess && (
               <div className="flex flex-row items-center gap-4 jusitfy-beteween">
-                <img className="max-w-16" src={user.data.image} />
+                <Image
+                  height={100}
+                  width={100}
+                  alt={user.data.id}
+                  className="max-w-16"
+                  src={user.data.image}
+                />
                 <div className="flex flex-col ">
                   <span>{user.data.name}</span>
                   <span>{user.data.email}</span>
@@ -87,7 +102,7 @@ export default () => {
           {posts.isLoading && "Loading posts"}
 
           {posts.isSuccess &&
-            posts.data.map((post: PostType) => (
+            posts.data.map((post: PostWithItAll) => (
               <Post key={post.id} {...post} refetch={posts.refetch} />
             ))}
         </>
@@ -95,3 +110,5 @@ export default () => {
     </>
   );
 };
+
+export default UserPage;

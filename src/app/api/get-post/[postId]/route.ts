@@ -20,6 +20,14 @@ export async function GET(
     return NextResponse.json({ message: "User not found" }, { status: 402 });
   }
 
+  const requester = await prisma.user.findUnique({
+    where: { email: session?.user?.email || "" },
+  });
+
+  if (!requester) {
+    return NextResponse.json({ message: "User not found" }, { status: 402 });
+  }
+
   const post = await prisma.post.findFirst({
     where: { id: params.postId },
     include: { user: true, likes: true },
@@ -45,6 +53,7 @@ export async function GET(
   const postsWithReplys = {
     ...post,
     replys,
+    requesterHasLiked: post.likes.some((like) => like.userId === requester.id),
   };
 
   console.log(postsWithReplys);

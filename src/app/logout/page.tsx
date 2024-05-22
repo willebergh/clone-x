@@ -4,7 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
 
-export default () => {
+const LogoutPage = () => {
   const { status } = useSession();
 
   useEffect(() => {
@@ -27,3 +27,5 @@ export default () => {
     </div>
   );
 };
+
+export default LogoutPage;

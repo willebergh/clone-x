@@ -7,7 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 
 import { ChangeEventHandler, FormEventHandler } from "react";
 
-export default ({
+const ReplyToPostInput = ({
   postId,
   refetch,
 }: {
@@ -61,3 +61,5 @@ export default ({
     </form>
   );
 };
+
+export default ReplyToPostInput;

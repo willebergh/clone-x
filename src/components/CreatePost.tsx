@@ -8,7 +8,7 @@ import { ChangeEventHandler, FormEventHandler } from "react";
 
 import api from "@/lib/axios";
 
-export default () => {
+const CreatePost = () => {
   const router = useRouter();
 
   const maxCount = 140;
@@ -60,3 +60,5 @@ export default () => {
     </form>
   );
 };
+
+export default CreatePost;

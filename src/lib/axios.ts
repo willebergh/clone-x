@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default {
+const api = {
   getCurrentUser: async () => {
     const { data } = await axios.get("/api/get-current-user");
     return data;
@@ -54,3 +54,5 @@ export default {
     return data;
   },
 };
+
+export default api;
