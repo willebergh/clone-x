@@ -29,4 +29,12 @@ export default {
     const { data } = await axios.get("/api/get-post/" + postId);
     return data;
   },
+  likePost: async (postId: string) => {
+    const { data } = await axios.post("/api/like-post/" + postId);
+    return data;
+  },
+  replyToPost: async (postId: string, content: string) => {
+    const { data } = await axios.post("/api/reply-post/" + postId, { content });
+    return data;
+  },
 };

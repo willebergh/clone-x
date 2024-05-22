@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 
+import { ChangeEventHandler, FormEventHandler } from "react";
+
 import api from "@/lib/axios";
 
 export default () => {
@@ -15,19 +17,17 @@ export default () => {
   const createPost = useMutation({
     mutationFn: () => api.createPost(content),
     onSuccess: () => {
-      console.log("done");
       router.push("/");
     },
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     createPost.mutate();
   };
 
-  const handleChange = (e) => {
+  const handleChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     e.preventDefault();
-
     const newText = e.target.value;
     if (newText.length <= maxCount) {
       setContent(newText);
@@ -40,7 +40,7 @@ export default () => {
       onSubmit={handleSubmit}
     >
       <textarea
-        rows="5"
+        rows={5}
         className="w-full p-2 resize-none focus:outline-none focus:ring-0"
         placeholder="Whats on your mind..."
         value={content}

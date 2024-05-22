@@ -9,34 +9,55 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ message: "unauthorized" }, { status: 401 });
   }
 
-  const user = await prisma.user.findUnique({
+  const requester = await prisma.user.findUnique({
     where: { email: session.user?.email || "" },
     include: { following: true },
   });
 
-  if (!user) {
+  if (!requester) {
     return NextResponse.json({ message: "User not found" }, { status: 402 });
   }
 
   const posts = await prisma.post.findMany({
-    include: { user: true },
+    include: { user: true, likes: true },
     orderBy: {
       created_at: "desc",
     },
   });
 
   const response = [];
-  for (const post of posts) {
-    for (const follow of user.following) {
-      if (follow.followedId === post.userId) {
-        response.push(post);
+  for await (const post of posts) {
+    let postWithLikeStatus = {
+      ...post,
+      requesterHasLiked: false,
+      numberOfReplys: 0,
+    };
+
+    for (const like of post.likes) {
+      if (like.userId === requester.id) {
+        postWithLikeStatus.requesterHasLiked = true;
+        console.log(like.userId, requester.id);
       }
     }
 
-    if (post.userId === user.id) {
-      response.push(post);
+    postWithLikeStatus.numberOfReplys = (
+      await prisma.reply.findMany({
+        where: { postId: post.id },
+      })
+    ).length;
+
+    for (const follow of requester.following) {
+      if (follow.followedId === post.userId) {
+        response.push(postWithLikeStatus);
+      }
+    }
+
+    if (post.userId === requester.id) {
+      response.push(postWithLikeStatus);
     }
   }
+
+  console.log(response);
 
   return NextResponse.json(response, { status: 200 });
 }

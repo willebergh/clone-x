@@ -22,7 +22,7 @@ export async function GET(
 
   const posts = await prisma.post.findMany({
     where: { userId: params.userId },
-    include: { user: true },
+    include: { user: true, likes: true },
     orderBy: {
       created_at: "desc",
     },

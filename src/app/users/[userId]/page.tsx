@@ -67,7 +67,10 @@ export default () => {
                   </span>
                 </div>
               </div>
-              <button onClick={handleActionButtonClick} className="bg-blue-300">
+              <button
+                onClick={handleActionButtonClick}
+                className="bg-blue-300 px-4 py-2"
+              >
                 {session.data?.user?.email === user.data.email
                   ? "Edit Profile"
                   : user.data.isFollowing
@@ -81,7 +84,10 @@ export default () => {
 
       {posts.isLoading && "Loading posts"}
 
-      {posts.isSuccess && posts.data.map((post) => <Post {...post} />)}
+      {posts.isSuccess &&
+        posts.data.map((post) => (
+          <Post key={post.id} {...post} refetch={posts.refetch} />
+        ))}
     </div>
   );
 };

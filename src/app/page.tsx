@@ -5,6 +5,8 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import api from "@/lib/axios";
 
+import { Post as PostType } from "prisma/prisma-client";
+
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 import Post from "@/components/Post";
@@ -32,8 +34,8 @@ export default function Home() {
   return (
     <div>
       <div>
-        {posts.data.map((post) => (
-          <Post {...post} />
+        {posts.data.map((post: any) => (
+          <Post key={post.id} refetch={posts.refetch} {...post} />
         ))}
       </div>
     </div>

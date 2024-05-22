@@ -22,7 +22,7 @@ export async function GET(
 
   const post = await prisma.post.findFirst({
     where: { id: params.postId },
-    include: { user: true },
+    include: { user: true, likes: true },
   });
 
   if (!post) {
@@ -34,7 +34,20 @@ export async function GET(
     );
   }
 
-  console.log(post);
+  const replys = await prisma.reply.findMany({
+    where: { postId: post.id },
+    include: { user: true },
+    orderBy: {
+      created_at: "desc",
+    },
+  });
 
-  return NextResponse.json(post, { status: 200 });
+  const postsWithReplys = {
+    ...post,
+    replys,
+  };
+
+  console.log(postsWithReplys);
+
+  return NextResponse.json(postsWithReplys, { status: 200 });
 }

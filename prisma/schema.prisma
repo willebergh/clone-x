@@ -23,7 +23,9 @@ model User {
 
   following     Follow[] @relation("following")
   followed      Follow[] @relation("followed")
-  posts         Post[]   @relation("post")
+  posts         Post[]   @relation()
+  likes         Like[]   @relation()
+  replys        Reply[]  @relation()
 }
 
 model Account {
@@ -94,7 +96,27 @@ model Follow {
 
 model Post {
   id                   String   @id @default(auto()) @map("_id") @db.ObjectId
-  user                 User     @relation("post", references: [id], fields: [userId])
+  user                 User     @relation(references: [id], fields: [userId])
+  userId               String   @db.ObjectId
+  content              String
+  created_at           DateTime @default(now())
+  likes                Like[]   @relation()
+  replys               Reply[]  @relation()
+}
+
+model Like {
+  id                   String  @id @default(auto()) @map("_id") @db.ObjectId
+  post                 Post    @relation(references: [id], fields: [postId], onDelete: Cascade)
+  postId               String  @db.ObjectId
+  user                 User    @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId               String  @db.ObjectId
+}
+
+model Reply {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  post                 Post     @relation(references: [id], fields: [postId])
+  postId               String   @db.ObjectId
+  user                 User     @relation(references: [id], fields: [userId])
   userId               String   @db.ObjectId
   content              String
   created_at           DateTime @default(now())
