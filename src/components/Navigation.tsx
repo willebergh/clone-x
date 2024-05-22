@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
-import api from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
+import NavLink from "@/components/NavLink";
+import api from "@/lib/axios";
 
 export default () => {
   const user = useQuery({
@@ -21,48 +21,26 @@ export default () => {
         Clone X
       </h1>
       <nav className="p-8 flex flex-col gap-4">
-        <Link
-          className="text-xl font-semibold px-4 py-2 hover:bg-gray-100"
-          href="/create-post"
-        >
-          Tweet
-        </Link>
+        <NavLink href="/create-post" text="Tweet" />
 
-        <Link
-          className="text-xl font-semibold hover:bg-gray-100 px-4 py-2"
-          href="/"
-        >
-          Home
-        </Link>
+        <NavLink href="/" text="Home" />
 
-        <Link
-          className="text-xl font-semibold hover:bg-gray-100 px-4 py-2"
+        <NavLink
           href={user.isSuccess ? "/users/" + user.data.id : "/"}
-        >
-          Profile
-        </Link>
+          text="Profile"
+        />
 
-        <Link
-          className="text-xl font-semibold hover:bg-gray-100"
+        <NavLink
           href="/notifications"
-        >
-          <div className="flex flex-row items-center justify-between">
-            <span className="px-4 py-2">Notifications</span>
-            {unreadNotifications.isSuccess &&
-              unreadNotifications.data.length > 0 && (
-                <span className="bg-red-500 px-4 py-2 text-white">
-                  {unreadNotifications.data.length}
-                </span>
-              )}
-          </div>
-        </Link>
+          text="Notifications"
+          badge={
+            unreadNotifications.isSuccess &&
+            unreadNotifications.data.length > 0 &&
+            unreadNotifications.data.length
+          }
+        />
 
-        <Link
-          className="text-xl font-semibold hover:bg-gray-100 px-4 py-2"
-          href="/logout"
-        >
-          Sign Out
-        </Link>
+        <NavLink href="/logout" text="Sign Out" />
       </nav>
     </header>
   );

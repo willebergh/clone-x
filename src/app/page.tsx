@@ -10,6 +10,7 @@ import { Post as PostType } from "prisma/prisma-client";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 import Post from "@/components/Post";
+import Loading from "@/components/Loading";
 import PageTitle from "@/components/PageTitle";
 
 export default function Home() {
@@ -30,7 +31,7 @@ export default function Home() {
     <>
       <PageTitle content="Home" />
 
-      {posts.isLoading && "Loading"}
+      {posts.isLoading && <Loading />}
 
       {posts.isSuccess &&
         posts.data.map((post: any) => (

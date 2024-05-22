@@ -3,9 +3,10 @@
 import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
-import PageTitle from "@/components/PageTitle";
-import { Notification } from "@prisma/client";
 import api from "@/lib/axios";
+import { Notification } from "@prisma/client";
+import PageTitle from "@/components/PageTitle";
+import Loading from "@/components/Loading";
 
 export default () => {
   const queryClient = useQueryClient();
@@ -31,7 +32,7 @@ export default () => {
     <>
       <PageTitle content="Notifications" />
 
-      {notifications.isLoading && "Loading"}
+      {notifications.isLoading && <Loading />}
 
       {notifications.isSuccess &&
         notifications.data.map((n: Notification) => (

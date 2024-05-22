@@ -2,7 +2,9 @@
 
 import api from "@/lib/axios";
 import Post from "@/components/Post";
+import Loading from "@/components/Loading";
 import PageTitle from "@/components/PageTitle";
+import { Post as PostType } from "prisma/prisma-client";
 
 import { useParams } from "next/navigation";
 import { useQuery, useMutation } from "@tanstack/react-query";
@@ -39,7 +41,7 @@ export default () => {
     <>
       <PageTitle content="Profile" />
 
-      {user.isLoading && "Loading"}
+      {user.isLoading && <Loading />}
 
       {user.isSuccess && (
         <>
@@ -60,7 +62,7 @@ export default () => {
                         {user.data.followed.length}
                       </span>
                     </div>
-                    <div className="flex flex-col  hover:bg-gray-100">
+                    <div className="flex flex-col">
                       <span className="text-center">Following</span>
                       <span className="text-center text-xl font-semibold">
                         {user.data.following.length}
@@ -85,7 +87,7 @@ export default () => {
           {posts.isLoading && "Loading posts"}
 
           {posts.isSuccess &&
-            posts.data.map((post) => (
+            posts.data.map((post: PostType) => (
               <Post key={post.id} {...post} refetch={posts.refetch} />
             ))}
         </>
