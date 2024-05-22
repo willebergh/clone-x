@@ -37,4 +37,8 @@ export default {
     const { data } = await axios.post("/api/reply-post/" + postId, { content });
     return data;
   },
+  searchUser: async (query: string) => {
+    const { data } = await axios.post("/api/search-users", { query });
+    return data;
+  },
 };
