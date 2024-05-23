@@ -47,7 +47,7 @@ const Search = () => {
             <Link
               key={user.id}
               href={"/users/" + user.id}
-              className="flex flex-row gap-2 items-center border-b border-black p-2"
+              className="flex flex-row gap-2 items-center border border-black p-2"
             >
               <Image
                 height={100}
